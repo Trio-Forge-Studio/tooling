@@ -1,6 +1,6 @@
 {
 	"name": "@trioforge/tooling",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Shared checks, release commands, and Lune helpers for Trio Forge roblox-ts packages",
 	"homepage": "https://github.com/Trio-Forge-Studio/tooling#readme",
 	"bugs": "https://github.com/Trio-Forge-Studio/tooling/issues",
