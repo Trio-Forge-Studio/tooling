@@ -1,0 +1,23 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+  # npm trusted publishing signs in with the workflow's OIDC token, so no npm token is stored here. The publisher
+  # may only stage, so each release waits for a maintainer to approve it with 2FA on npmjs.com.
+  # npm checks the caller filename, so each package must keep release.yml.
+  id-token: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    uses: ./.github/workflows/package-release.yml
+    with:
+      stage-command: node bin/stage-release.mjs

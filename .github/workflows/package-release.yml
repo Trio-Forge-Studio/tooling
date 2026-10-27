@@ -1,0 +1,46 @@
+name: Package release
+
+on:
+  workflow_call:
+    inputs:
+      stage-command:
+        type: string
+        default: pnpm exec stage-release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: Trio-Forge-Studio/tooling/.github/actions/setup@main
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # npm stage publish needs npm 11.15 or later.
+      - name: Update npm
+        run: npm install --global npm@11
+
+      - name: Open the version PR, or stage what it bumped
+        uses: changesets/action@v2.1.2
+        with:
+          version-script: pnpm changeset version
+          publish-script: ${{ inputs.stage-command }}
+          pr-title: "chore(release): version packages"
+          commit-message: "chore(release): version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
