@@ -7,7 +7,7 @@
 Add the devDependency.
 
 ```sh
-pnpm add -D @trioforge/tooling@0.1.0
+pnpm add -D @trioforge/tooling
 ```
 
 Point the `.luaurc` alias at the installed Lune helpers.
